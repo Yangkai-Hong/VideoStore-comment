@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "ListMediaWebAPI";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h2>All Medias</h2>
+    <hr />
+    <table id="mediaList"></table>
+</div>
+<hr />
+
+<div>
+    <h2>Search Media by Title</h2>
+    <input type="text" id="mediaTitle" size="5" />
+    <input type="button" value="Search" onclick="find();" />
+    <p id="media"></p>
+</div>
+
+@section scripts {
+    <script>
+        var uri = '/api/media';
+        $(document).ready(function () {
+            // Send an AJAX request
+            $.getJSON(uri)
+                .done(function (data) {
+                    // On success, 'data' contains a list of medias.
+                    $.each(data,
+                        function (key, item) {
+                            // Add a list item for the media.
+                            var tableTitle = document.createElement("th");
+                            tableTitle.innerHTML = item.Title;
+
+                            var tablePrice = document.createElement("td");
+                            tablePrice.innerHTML = " Price: $" + item.Price;
+
+                            var tableQuantity = document.createElement("td");
+                            tableQuantity.innerHTML = " Quantity: " + item.StockCount;
+
+                            var tableRow = document.createElement("tr");
+                            tableRow.appendChild(tableTitle);
+                            tableRow.appendChild(tablePrice);
+                            tableRow.appendChild(tableQuantity);
+
+                            var table = document.getElementById("mediaList");
+                            table.appendChild(tableRow);
+                        });
+                });
+        });
+
+        function formatItem(item) {
+            return item.Title + '   Price: $' + item.Price + '   Quantity: ' + item.StockCount;
+        }
+
+        function find() {
+            var title = $('#mediaTitle').val();
+            $.getJSON(uri + '/' + title)
+                .done(function (data) {
+                    $('#media').text(formatItem(data));
+                })
+                .fail(function (jqXHR, textStatus, err) {
+                    $('#media').text('Error: ' + err);
+                });
+        }
+    </script>
+}

@@ -1,0 +1,78 @@
+﻿@model VideoStore.WebClient.ViewModels.DetailsViewModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Media Details</h2>
+<table>
+    <tr>
+        <th>Id: </th>
+        <td> @Model.Media.Id</td>
+    </tr>
+    <tr>
+        <th>Title: </th>
+        <td> @Model.Media.Title</td>
+    </tr>
+    <tr>
+        <th>Director: </th>
+        <td> @Model.Media.Director</td>
+    </tr>
+    <tr>
+        <th>Genre: </th>
+        <td> @Model.Media.Genre</td>
+    </tr>
+    <tr>
+        <th>Price: </th>
+        <td> $@Model.Media.Price</td>
+    </tr>
+    <tr>
+        <th>Quantity: </th>
+        <td> @Model.Media.StockCount</td>
+    </tr>
+</table>
+<hr />
+
+<h2>Customer Reviews</h2>
+<dl>
+    <dt>Average Rating: </dt>
+    <dd>@Model.AverageRating out of 5 points</dd>
+</dl>
+
+<p>@Html.ActionLink("Write a customer review", "CreateReview", new { media = Model.Media.Id })</p>
+<br />
+
+                <ul class="list-group">
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <li class="list-group-item">
+                            <table>
+                                <tr>
+                                    <th>Title: </th>
+                                    <td> @review.Title</td>
+                                </tr>
+                                <tr>
+                                    <th>Written Date: </th>
+                                    <td> @review.Date</td>
+                                </tr>
+                                <tr>
+                                    <th>Reviewer Name: </th>
+                                    <td> @review.Reviewer.Name</td>
+                                </tr>
+                                <tr>
+                                    <th>Reviewer Location: </th>
+                                    <td> @review.Reviewer.Address</td>
+                                </tr>
+                                <tr>
+                                    <th>Rating: </th>
+                                    <td> @review.Rating</td>
+                                </tr>
+                                <tr>
+                                    <th>Content: </th>
+                                    <td> @review.Content</td>
+                                </tr>
+                            </table>
+                        </li>
+                    }
+                </ul>
+    
+<p>@Html.ActionLink("Back to List", "ListMedia")</p>
